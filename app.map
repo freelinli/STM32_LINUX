@@ -58,6 +58,14 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 startup/startup_stm32f10x_hd.o
  .data          0x0000000000000000        0x0 user/stm32f10x_it.o
  .bss           0x0000000000000000        0x0 user/stm32f10x_it.o
+ .text          0x0000000000000000        0x0 user/bsp.o
+ .data          0x0000000000000000        0x0 user/bsp.o
+ .bss           0x0000000000000000        0x0 user/bsp.o
+ .debug_line    0x0000000000000000        0x0 user/bsp.o
+ .debug_str     0x0000000000000000       0xa5 user/bsp.o
+ .comment       0x0000000000000000       0x7a user/bsp.o
+ .ARM.attributes
+                0x0000000000000000       0x33 user/bsp.o
  .data          0x0000000000000000        0x0 user/main.o
  .bss           0x0000000000000000        0x0 user/main.o
  .bss           0x0000000000000000        0x0 cmsis/system_stm32f10x.o
@@ -440,6 +448,7 @@ LOAD /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-no
 LOAD /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
 LOAD startup/startup_stm32f10x_hd.o
 LOAD user/stm32f10x_it.o
+LOAD user/bsp.o
 LOAD user/main.o
 LOAD cmsis/system_stm32f10x.o
 LOAD lib/src/stm32f10x_pwr.o
@@ -757,11 +766,11 @@ LOAD /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-no
  libgcc.a(*)
 OUTPUT(app.elf elf32-littlearm)
 
-.debug_line     0x0000000000000000      0x643
+.debug_line     0x0000000000000000      0x63a
  .debug_line    0x0000000000000000       0x7b startup/startup_stm32f10x_hd.o
  .debug_line    0x000000000000007b      0x191 user/stm32f10x_it.o
- .debug_line    0x000000000000020c      0x1aa user/main.o
- .debug_line    0x00000000000003b6      0x28d cmsis/system_stm32f10x.o
+ .debug_line    0x000000000000020c      0x1a1 user/main.o
+ .debug_line    0x00000000000003ad      0x28d cmsis/system_stm32f10x.o
 
 .debug_info     0x0000000000000000      0x7f8
  .debug_info    0x0000000000000000       0x22 startup/startup_stm32f10x_hd.o
@@ -785,13 +794,13 @@ OUTPUT(app.elf elf32-littlearm)
  .debug_aranges
                 0x0000000000000068       0x20 cmsis/system_stm32f10x.o
 
-.debug_str      0x0000000000000000      0x380
+.debug_str      0x0000000000000000      0x39b
  .debug_str     0x0000000000000000       0x51 startup/startup_stm32f10x_hd.o
  .debug_str     0x0000000000000051      0x19b user/stm32f10x_it.o
                                         0x1fc (size before relaxing)
- .debug_str     0x00000000000001ec       0x78 user/main.o
-                                        0x1d0 (size before relaxing)
- .debug_str     0x0000000000000264      0x11c cmsis/system_stm32f10x.o
+ .debug_str     0x00000000000001ec       0x93 user/main.o
+                                        0x1c7 (size before relaxing)
+ .debug_str     0x000000000000027f      0x11c cmsis/system_stm32f10x.o
                                         0x2c9 (size before relaxing)
 
 .debug_ranges   0x0000000000000000       0x20

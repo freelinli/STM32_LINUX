@@ -10,7 +10,6 @@ void delay(int time)
 	}
 }
 
-
 int main()
 {
 	/* 开启GPIOB时钟 */

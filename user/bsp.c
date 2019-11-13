@@ -5,6 +5,7 @@ int bsp_init(void)
 {
 
 	SysTick_Init();
+	SysInitIndictor();
 
 }
 

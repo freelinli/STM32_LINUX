@@ -2,6 +2,7 @@
 #define __BSP_H__
 
 #include "bsp_SysTick.h"
+#include "bsp_led.h"
 
 int bsp_init(void);
 

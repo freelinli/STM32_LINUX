@@ -1,5 +1,6 @@
 TARGET=app
 CC=arm-none-eabi-gcc
+GDB=arm-none-eabi-gdb
 OBJCOPY=arm-none-eabi-objcopy
 NOT_INCLUDE_DIR=demo
 RM=rm -f
@@ -29,6 +30,10 @@ bin:$(TARGET)
 	$(OBJCOPY) $(TARGET).elf $(TARGET).bin
 hex:
 	$(OBJCOPY) $(TARGET).elf -Oihex $(TARGET).hex
+debug: $(TARGET).elf
+	@printf "  GDB DEBUG $<\n"
+	openocd  -f /usr/local/share/openocd/scripts/interface/stlink-v2.cfg  -f /usr/local/share/openocd/scripts/target/stm32f1x.cfg
+	# $(GDB) -> target remote localhost:3333 -> monitor reset -> monitor halt -> load -> b main -> info b -> c
 clean:
 	$(RM) $(shell find ./ -name '*.o') $(TARGET).* *~
 download:

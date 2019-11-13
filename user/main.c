@@ -1,5 +1,5 @@
 #include "stm32f10x.h"
-
+#include "bsp.h"
 #define DELAY_TIME 0xffff
 void delay(int time)
 {
@@ -11,6 +11,8 @@ void delay(int time)
 }
 int main(int argc, const char *argv[])
 {
+
+	bsp_init();
 	
 	//*(unsigned int*)(0x40021000+0x18) |= 1<<3;
 	RCC->APB2ENR |= 1<<3;
@@ -20,10 +22,10 @@ int main(int argc, const char *argv[])
 	
 	//*(unsigned int*)(0x40010c00+0x0c) &= ~(1<<0);
 	while(1) {
-		delay(0x1f);
+		Delay_ms(1000);
 		GPIOB->ODR &= ~(1<<0);
 
-		delay(0x1f);
+		Delay_ms(1000);
 		GPIOB->ODR |= (1<<0);
 	}
 }

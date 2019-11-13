@@ -157,14 +157,8 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 startup/startup_stm32f10x_hd.o
  .data          0x0000000000000000        0x0 user/stm32f10x_it.o
  .bss           0x0000000000000000        0x0 user/stm32f10x_it.o
- .text          0x0000000000000000        0x0 user/bsp.o
  .data          0x0000000000000000        0x0 user/bsp.o
  .bss           0x0000000000000000        0x0 user/bsp.o
- .debug_line    0x0000000000000000        0x0 user/bsp.o
- .debug_str     0x0000000000000000       0xa5 user/bsp.o
- .comment       0x0000000000000000       0x7a user/bsp.o
- .ARM.attributes
-                0x0000000000000000       0x33 user/bsp.o
  .text          0x0000000000000000     0x28d4 user/cJSON.o
  .data          0x0000000000000000        0x8 user/cJSON.o
  .bss           0x0000000000000000        0x4 user/cJSON.o
@@ -181,6 +175,7 @@ Discarded input sections
                 0x0000000000000000       0x2d user/cJSON.o
  .data          0x0000000000000000        0x0 user/main.o
  .bss           0x0000000000000000        0x0 user/main.o
+ .data          0x0000000000000000        0x0 user/bsp_SysTick.o
  .bss           0x0000000000000000        0x0 cmsis/system_stm32f10x.o
  .text          0x0000000000000000      0x1c4 lib/src/stm32f10x_pwr.o
  .data          0x0000000000000000        0x0 lib/src/stm32f10x_pwr.o
@@ -442,19 +437,7 @@ Discarded input sections
  .debug_frame   0x0000000000000000      0x214 lib/src/stm32f10x_rtc.o
  .ARM.attributes
                 0x0000000000000000       0x2d lib/src/stm32f10x_rtc.o
- .text          0x0000000000000000      0x7dc lib/src/stm32f10x_rcc.o
- .data          0x0000000000000000       0x14 lib/src/stm32f10x_rcc.o
  .bss           0x0000000000000000        0x0 lib/src/stm32f10x_rcc.o
- .debug_info    0x0000000000000000      0x911 lib/src/stm32f10x_rcc.o
- .debug_abbrev  0x0000000000000000      0x1f9 lib/src/stm32f10x_rcc.o
- .debug_aranges
-                0x0000000000000000       0x20 lib/src/stm32f10x_rcc.o
- .debug_line    0x0000000000000000      0x53b lib/src/stm32f10x_rcc.o
- .debug_str     0x0000000000000000      0x60c lib/src/stm32f10x_rcc.o
- .comment       0x0000000000000000       0x7a lib/src/stm32f10x_rcc.o
- .debug_frame   0x0000000000000000      0x4f4 lib/src/stm32f10x_rcc.o
- .ARM.attributes
-                0x0000000000000000       0x2d lib/src/stm32f10x_rcc.o
  .text          0x0000000000000000     0x1d94 lib/src/stm32f10x_tim.o
  .data          0x0000000000000000        0x0 lib/src/stm32f10x_tim.o
  .bss           0x0000000000000000        0x0 lib/src/stm32f10x_tim.o
@@ -1010,6 +993,7 @@ LOAD user/stm32f10x_it.o
 LOAD user/bsp.o
 LOAD user/cJSON.o
 LOAD user/main.o
+LOAD user/bsp_SysTick.o
 LOAD cmsis/system_stm32f10x.o
 LOAD lib/src/stm32f10x_pwr.o
 LOAD lib/src/stm32f10x_i2c.o
@@ -1060,7 +1044,7 @@ LOAD /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-no
 .eh_frame       0x00000000080001e4        0x0
  .eh_frame      0x00000000080001e4        0x0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
 
-.text           0x00000000080001e4      0x504
+.text           0x00000000080001e4      0xebc
                 0x00000000080001e4                . = ALIGN (0x4)
  *(.text)
  .text          0x00000000080001e4       0x40 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
@@ -1074,245 +1058,294 @@ LOAD /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-no
                 0x0000000008000254                DebugMon_Handler
                 0x0000000008000260                PendSV_Handler
                 0x000000000800026c                SysTick_Handler
- .text          0x0000000008000278       0x88 user/main.o
-                0x0000000008000278                delay
-                0x00000000080002b0                main
- .text          0x0000000008000300      0x258 cmsis/system_stm32f10x.o
-                0x0000000008000300                SystemInit
-                0x0000000008000368                SystemCoreClockUpdate
+ .text          0x0000000008000278        0xe user/bsp.o
+                0x0000000008000278                bsp_init
+ *fill*         0x0000000008000286        0x2 
+ .text          0x0000000008000288       0x90 user/main.o
+                0x0000000008000288                delay
+                0x00000000080002c0                main
+ .text          0x0000000008000318      0x1c4 user/bsp_SysTick.o
+                0x00000000080003b0                SysTick_Init
+                0x00000000080003ec                Delay_us
+                0x0000000008000424                Delay_ms
+                0x000000000800044a                TimingDelay_Decrement
+                0x000000000800046c                SetSysClockTo72
+ .text          0x00000000080004dc      0x258 cmsis/system_stm32f10x.o
+                0x00000000080004dc                SystemInit
+                0x0000000008000544                SystemCoreClockUpdate
+ .text          0x0000000008000734      0x7dc lib/src/stm32f10x_rcc.o
+                0x0000000008000734                RCC_DeInit
+                0x0000000008000790                RCC_HSEConfig
+                0x00000000080007ec                RCC_WaitForHSEStartUp
+                0x000000000800083c                RCC_AdjustHSICalibrationValue
+                0x0000000008000878                RCC_HSICmd
+                0x0000000008000898                RCC_PLLConfig
+                0x00000000080008d4                RCC_PLLCmd
+                0x00000000080008f4                RCC_SYSCLKConfig
+                0x000000000800092c                RCC_GetSYSCLKSource
+                0x0000000008000948                RCC_HCLKConfig
+                0x0000000008000980                RCC_PCLK1Config
+                0x00000000080009b8                RCC_PCLK2Config
+                0x00000000080009f0                RCC_ITConfig
+                0x0000000008000a3c                RCC_USBCLKConfig
+                0x0000000008000a58                RCC_ADCCLKConfig
+                0x0000000008000a90                RCC_LSEConfig
+                0x0000000008000ad0                RCC_LSICmd
+                0x0000000008000af0                RCC_RTCCLKConfig
+                0x0000000008000b14                RCC_RTCCLKCmd
+                0x0000000008000b34                RCC_GetClocksFreq
+                0x0000000008000ca0                RCC_AHBPeriphClockCmd
+                0x0000000008000cdc                RCC_APB2PeriphClockCmd
+                0x0000000008000d18                RCC_APB1PeriphClockCmd
+                0x0000000008000d54                RCC_APB2PeriphResetCmd
+                0x0000000008000d90                RCC_APB1PeriphResetCmd
+                0x0000000008000dcc                RCC_BackupResetCmd
+                0x0000000008000dec                RCC_ClockSecuritySystemCmd
+                0x0000000008000e0c                RCC_MCOConfig
+                0x0000000008000e2c                RCC_GetFlagStatus
+                0x0000000008000ea0                RCC_ClearFlag
+                0x0000000008000ebc                RCC_GetITStatus
+                0x0000000008000ef0                RCC_ClearITPendingBit
  *(.text*)
  .text.Reset_Handler
-                0x0000000008000558       0x48 startup/startup_stm32f10x_hd.o
-                0x0000000008000558                Reset_Handler
+                0x0000000008000f10       0x48 startup/startup_stm32f10x_hd.o
+                0x0000000008000f10                Reset_Handler
  .text.Default_Handler
-                0x00000000080005a0        0x2 startup/startup_stm32f10x_hd.o
-                0x00000000080005a0                EXTI2_IRQHandler
-                0x00000000080005a0                TIM8_TRG_COM_IRQHandler
-                0x00000000080005a0                TIM8_CC_IRQHandler
-                0x00000000080005a0                TIM1_CC_IRQHandler
-                0x00000000080005a0                TIM6_IRQHandler
-                0x00000000080005a0                PVD_IRQHandler
-                0x00000000080005a0                SDIO_IRQHandler
-                0x00000000080005a0                EXTI3_IRQHandler
-                0x00000000080005a0                EXTI0_IRQHandler
-                0x00000000080005a0                I2C2_EV_IRQHandler
-                0x00000000080005a0                ADC1_2_IRQHandler
-                0x00000000080005a0                SPI1_IRQHandler
-                0x00000000080005a0                TAMPER_IRQHandler
-                0x00000000080005a0                TIM8_UP_IRQHandler
-                0x00000000080005a0                DMA2_Channel2_IRQHandler
-                0x00000000080005a0                DMA1_Channel4_IRQHandler
-                0x00000000080005a0                USART3_IRQHandler
-                0x00000000080005a0                RTC_IRQHandler
-                0x00000000080005a0                DMA1_Channel7_IRQHandler
-                0x00000000080005a0                CAN1_RX1_IRQHandler
-                0x00000000080005a0                UART5_IRQHandler
-                0x00000000080005a0                ADC3_IRQHandler
-                0x00000000080005a0                TIM4_IRQHandler
-                0x00000000080005a0                DMA2_Channel1_IRQHandler
-                0x00000000080005a0                I2C1_EV_IRQHandler
-                0x00000000080005a0                DMA1_Channel6_IRQHandler
-                0x00000000080005a0                UART4_IRQHandler
-                0x00000000080005a0                TIM3_IRQHandler
-                0x00000000080005a0                RCC_IRQHandler
-                0x00000000080005a0                TIM1_TRG_COM_IRQHandler
-                0x00000000080005a0                DMA1_Channel1_IRQHandler
-                0x00000000080005a0                Default_Handler
-                0x00000000080005a0                EXTI15_10_IRQHandler
-                0x00000000080005a0                TIM7_IRQHandler
-                0x00000000080005a0                TIM5_IRQHandler
-                0x00000000080005a0                EXTI9_5_IRQHandler
-                0x00000000080005a0                SPI2_IRQHandler
-                0x00000000080005a0                DMA1_Channel5_IRQHandler
-                0x00000000080005a0                EXTI4_IRQHandler
-                0x00000000080005a0                USB_LP_CAN1_RX0_IRQHandler
-                0x00000000080005a0                USB_HP_CAN1_TX_IRQHandler
-                0x00000000080005a0                DMA1_Channel3_IRQHandler
-                0x00000000080005a0                FSMC_IRQHandler
-                0x00000000080005a0                TIM1_UP_IRQHandler
-                0x00000000080005a0                WWDG_IRQHandler
-                0x00000000080005a0                TIM2_IRQHandler
-                0x00000000080005a0                TIM1_BRK_IRQHandler
-                0x00000000080005a0                EXTI1_IRQHandler
-                0x00000000080005a0                RTCAlarm_IRQHandler
-                0x00000000080005a0                DMA2_Channel4_5_IRQHandler
-                0x00000000080005a0                USART2_IRQHandler
-                0x00000000080005a0                I2C2_ER_IRQHandler
-                0x00000000080005a0                DMA1_Channel2_IRQHandler
-                0x00000000080005a0                TIM8_BRK_IRQHandler
-                0x00000000080005a0                CAN1_SCE_IRQHandler
-                0x00000000080005a0                FLASH_IRQHandler
-                0x00000000080005a0                USART1_IRQHandler
-                0x00000000080005a0                SPI3_IRQHandler
-                0x00000000080005a0                I2C1_ER_IRQHandler
-                0x00000000080005a0                USBWakeUp_IRQHandler
-                0x00000000080005a0                DMA2_Channel3_IRQHandler
- *fill*         0x00000000080005a2        0x2 
+                0x0000000008000f58        0x2 startup/startup_stm32f10x_hd.o
+                0x0000000008000f58                EXTI2_IRQHandler
+                0x0000000008000f58                TIM8_TRG_COM_IRQHandler
+                0x0000000008000f58                TIM8_CC_IRQHandler
+                0x0000000008000f58                TIM1_CC_IRQHandler
+                0x0000000008000f58                TIM6_IRQHandler
+                0x0000000008000f58                PVD_IRQHandler
+                0x0000000008000f58                SDIO_IRQHandler
+                0x0000000008000f58                EXTI3_IRQHandler
+                0x0000000008000f58                EXTI0_IRQHandler
+                0x0000000008000f58                I2C2_EV_IRQHandler
+                0x0000000008000f58                ADC1_2_IRQHandler
+                0x0000000008000f58                SPI1_IRQHandler
+                0x0000000008000f58                TAMPER_IRQHandler
+                0x0000000008000f58                TIM8_UP_IRQHandler
+                0x0000000008000f58                DMA2_Channel2_IRQHandler
+                0x0000000008000f58                DMA1_Channel4_IRQHandler
+                0x0000000008000f58                USART3_IRQHandler
+                0x0000000008000f58                RTC_IRQHandler
+                0x0000000008000f58                DMA1_Channel7_IRQHandler
+                0x0000000008000f58                CAN1_RX1_IRQHandler
+                0x0000000008000f58                UART5_IRQHandler
+                0x0000000008000f58                ADC3_IRQHandler
+                0x0000000008000f58                TIM4_IRQHandler
+                0x0000000008000f58                DMA2_Channel1_IRQHandler
+                0x0000000008000f58                I2C1_EV_IRQHandler
+                0x0000000008000f58                DMA1_Channel6_IRQHandler
+                0x0000000008000f58                UART4_IRQHandler
+                0x0000000008000f58                TIM3_IRQHandler
+                0x0000000008000f58                RCC_IRQHandler
+                0x0000000008000f58                TIM1_TRG_COM_IRQHandler
+                0x0000000008000f58                DMA1_Channel1_IRQHandler
+                0x0000000008000f58                Default_Handler
+                0x0000000008000f58                EXTI15_10_IRQHandler
+                0x0000000008000f58                TIM7_IRQHandler
+                0x0000000008000f58                TIM5_IRQHandler
+                0x0000000008000f58                EXTI9_5_IRQHandler
+                0x0000000008000f58                SPI2_IRQHandler
+                0x0000000008000f58                DMA1_Channel5_IRQHandler
+                0x0000000008000f58                EXTI4_IRQHandler
+                0x0000000008000f58                USB_LP_CAN1_RX0_IRQHandler
+                0x0000000008000f58                USB_HP_CAN1_TX_IRQHandler
+                0x0000000008000f58                DMA1_Channel3_IRQHandler
+                0x0000000008000f58                FSMC_IRQHandler
+                0x0000000008000f58                TIM1_UP_IRQHandler
+                0x0000000008000f58                WWDG_IRQHandler
+                0x0000000008000f58                TIM2_IRQHandler
+                0x0000000008000f58                TIM1_BRK_IRQHandler
+                0x0000000008000f58                EXTI1_IRQHandler
+                0x0000000008000f58                RTCAlarm_IRQHandler
+                0x0000000008000f58                DMA2_Channel4_5_IRQHandler
+                0x0000000008000f58                USART2_IRQHandler
+                0x0000000008000f58                I2C2_ER_IRQHandler
+                0x0000000008000f58                DMA1_Channel2_IRQHandler
+                0x0000000008000f58                TIM8_BRK_IRQHandler
+                0x0000000008000f58                CAN1_SCE_IRQHandler
+                0x0000000008000f58                FLASH_IRQHandler
+                0x0000000008000f58                USART1_IRQHandler
+                0x0000000008000f58                SPI3_IRQHandler
+                0x0000000008000f58                I2C1_ER_IRQHandler
+                0x0000000008000f58                USBWakeUp_IRQHandler
+                0x0000000008000f58                DMA2_Channel3_IRQHandler
+ *fill*         0x0000000008000f5a        0x2 
  .text.__libc_init_array
-                0x00000000080005a4       0x48 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-init.o)
-                0x00000000080005a4                __libc_init_array
+                0x0000000008000f5c       0x48 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-init.o)
+                0x0000000008000f5c                __libc_init_array
  .text.startup.register_fini
-                0x00000000080005ec       0x14 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x0000000008000600        0xc /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-atexit.o)
-                0x0000000008000600                atexit
+                0x0000000008000fa4       0x14 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x0000000008000fb8        0xc /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-atexit.o)
+                0x0000000008000fb8                atexit
  .text.__libc_fini_array
-                0x000000000800060c       0x2c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-fini.o)
-                0x000000000800060c                __libc_fini_array
+                0x0000000008000fc4       0x2c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-fini.o)
+                0x0000000008000fc4                __libc_fini_array
  .text.__retarget_lock_acquire_recursive
-                0x0000000008000638        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
-                0x0000000008000638                __retarget_lock_acquire_recursive
+                0x0000000008000ff0        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
+                0x0000000008000ff0                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x000000000800063c        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
-                0x000000000800063c                __retarget_lock_release_recursive
+                0x0000000008000ff4        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
+                0x0000000008000ff4                __retarget_lock_release_recursive
  .text.__register_exitproc
-                0x0000000008000640       0x8c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__atexit.o)
-                0x0000000008000640                __register_exitproc
+                0x0000000008000ff8       0x8c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__atexit.o)
+                0x0000000008000ff8                __register_exitproc
  *(.rodata)
  *(.rodata*)
  .rodata._global_impure_ptr
-                0x00000000080006cc        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-impure.o)
-                0x00000000080006cc                _global_impure_ptr
+                0x0000000008001084        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-impure.o)
+                0x0000000008001084                _global_impure_ptr
  *(.glue_7)
- .glue_7        0x00000000080006d0        0x0 linker stubs
+ .glue_7        0x0000000008001088        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x00000000080006d0        0x0 linker stubs
+ .glue_7t       0x0000000008001088        0x0 linker stubs
  *(.init)
- .init          0x00000000080006d0        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crti.o
-                0x00000000080006d0                _init
- .init          0x00000000080006d4        0x8 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtn.o
+ .init          0x0000000008001088        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crti.o
+                0x0000000008001088                _init
+ .init          0x000000000800108c        0x8 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtn.o
  *(.fini)
- .fini          0x00000000080006dc        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crti.o
-                0x00000000080006dc                _fini
- .fini          0x00000000080006e0        0x8 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtn.o
-                0x00000000080006e8                . = ALIGN (0x4)
-                0x00000000080006e8                _etext = .
+ .fini          0x0000000008001094        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crti.o
+                0x0000000008001094                _fini
+ .fini          0x0000000008001098        0x8 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtn.o
+                0x00000000080010a0                . = ALIGN (0x4)
+                0x00000000080010a0                _etext = .
 
-.vfp11_veneer   0x00000000080006e8        0x0
- .vfp11_veneer  0x00000000080006e8        0x0 linker stubs
+.vfp11_veneer   0x00000000080010a0        0x0
+ .vfp11_veneer  0x00000000080010a0        0x0 linker stubs
 
-.v4_bx          0x00000000080006e8        0x0
- .v4_bx         0x00000000080006e8        0x0 linker stubs
+.v4_bx          0x00000000080010a0        0x0
+ .v4_bx         0x00000000080010a0        0x0 linker stubs
 
-.iplt           0x00000000080006e8        0x0
- .iplt          0x00000000080006e8        0x0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+.iplt           0x00000000080010a0        0x0
+ .iplt          0x00000000080010a0        0x0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
 
-.rel.dyn        0x00000000080006e8        0x0
- .rel.iplt      0x00000000080006e8        0x0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+.rel.dyn        0x00000000080010a0        0x0
+ .rel.iplt      0x00000000080010a0        0x0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x00000000080006e8        0x0
-                0x00000000080006e8                __exidx_start = .
+.ARM            0x00000000080010a0        0x0
+                0x00000000080010a0                __exidx_start = .
  *(.ARM.exidx*)
-                0x00000000080006e8                __exidx_end = .
+                0x00000000080010a0                __exidx_end = .
 
 .ARM.attributes
-                0x00000000080006e8       0x29
+                0x00000000080010a0       0x29
  *(.ARM.attributes)
  .ARM.attributes
-                0x00000000080006e8       0x1d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crti.o
+                0x00000000080010a0       0x1d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crti.o
  .ARM.attributes
-                0x0000000008000705       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+                0x00000000080010bd       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
  .ARM.attributes
-                0x0000000008000732       0x21 startup/startup_stm32f10x_hd.o
+                0x00000000080010ea       0x21 startup/startup_stm32f10x_hd.o
  .ARM.attributes
-                0x0000000008000753       0x2d user/stm32f10x_it.o
+                0x000000000800110b       0x2d user/stm32f10x_it.o
  .ARM.attributes
-                0x0000000008000780       0x2d user/main.o
+                0x0000000008001138       0x2d user/bsp.o
  .ARM.attributes
-                0x00000000080007ad       0x2d cmsis/system_stm32f10x.o
+                0x0000000008001165       0x2d user/main.o
  .ARM.attributes
-                0x00000000080007da       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-impure.o)
+                0x0000000008001192       0x2d user/bsp_SysTick.o
  .ARM.attributes
-                0x0000000008000807       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-init.o)
+                0x00000000080011bf       0x2d cmsis/system_stm32f10x.o
  .ARM.attributes
-                0x0000000008000834       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
+                0x00000000080011ec       0x2d lib/src/stm32f10x_rcc.o
  .ARM.attributes
-                0x0000000008000861       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-atexit.o)
+                0x0000000008001219       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-impure.o)
  .ARM.attributes
-                0x000000000800088e       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-fini.o)
+                0x0000000008001246       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-init.o)
  .ARM.attributes
-                0x00000000080008bb       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
+                0x0000000008001273       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
  .ARM.attributes
-                0x00000000080008e8       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__atexit.o)
+                0x00000000080012a0       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-atexit.o)
  .ARM.attributes
-                0x0000000008000915       0x1d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtn.o
+                0x00000000080012cd       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-fini.o)
+ .ARM.attributes
+                0x00000000080012fa       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
+ .ARM.attributes
+                0x0000000008001327       0x2d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__atexit.o)
+ .ARM.attributes
+                0x0000000008001354       0x1d /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtn.o
 
-.preinit_array  0x00000000080006e8        0x0
-                0x00000000080006e8                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x00000000080010a0        0x0
+                0x00000000080010a0                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x00000000080006e8                PROVIDE (__preinit_array_end = .)
+                0x00000000080010a0                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x00000000080006e8        0x8
-                0x00000000080006e8                PROVIDE (__init_array_start = .)
+.init_array     0x00000000080010a0        0x8
+                0x00000000080010a0                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  .init_array.00000
-                0x00000000080006e8        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
+                0x00000000080010a0        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
  *(.init_array*)
- .init_array    0x00000000080006ec        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
-                0x00000000080006f0                PROVIDE (__init_array_end = .)
+ .init_array    0x00000000080010a4        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+                0x00000000080010a8                PROVIDE (__init_array_end = .)
 
-.fini_array     0x00000000080006f0        0x4
-                0x00000000080006f0                PROVIDE (__fini_array_start = .)
+.fini_array     0x00000000080010a8        0x4
+                0x00000000080010a8                PROVIDE (__fini_array_start = .)
  *(.fini_array*)
- .fini_array    0x00000000080006f0        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+ .fini_array    0x00000000080010a8        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
  *(SORT_BY_NAME(.fini_array.*))
-                0x00000000080006f4                PROVIDE (__fini_array_end = .)
-                0x00000000080006f4                _sidata = .
+                0x00000000080010ac                PROVIDE (__fini_array_end = .)
+                0x00000000080010ac                _sidata = .
 
-.data           0x0000000020000000      0x444 load address 0x00000000080006f4
+.data           0x0000000020000000      0x454 load address 0x00000000080010ac
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
  .data          0x0000000020000000       0x14 cmsis/system_stm32f10x.o
                 0x0000000020000000                SystemCoreClock
                 0x0000000020000004                AHBPrescTable
+ .data          0x0000000020000014       0x14 lib/src/stm32f10x_rcc.o
  *(.data*)
- *fill*         0x0000000020000014        0x4 
  .data.impure_data
-                0x0000000020000018      0x428 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-impure.o)
+                0x0000000020000028      0x428 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-impure.o)
  .data.__atexit_recursive_mutex
-                0x0000000020000440        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
-                0x0000000020000440                __atexit_recursive_mutex
-                0x0000000020000444                . = ALIGN (0x4)
-                0x0000000020000444                _edata = .
+                0x0000000020000450        0x4 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
+                0x0000000020000450                __atexit_recursive_mutex
+                0x0000000020000454                . = ALIGN (0x4)
+                0x0000000020000454                _edata = .
 
-.igot.plt       0x0000000020000444        0x0 load address 0x0000000008000b38
- .igot.plt      0x0000000020000444        0x0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
-                0x0000000020000444                . = ALIGN (0x4)
+.igot.plt       0x0000000020000454        0x0 load address 0x0000000008001500
+ .igot.plt      0x0000000020000454        0x0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+                0x0000000020000454                . = ALIGN (0x4)
 
-.bss            0x0000000020000444       0x40 load address 0x0000000008000b38
-                0x0000000020000444                _sbss = .
-                0x0000000020000444                __bss_start__ = _sbss
+.bss            0x0000000020000454       0x44 load address 0x0000000008001500
+                0x0000000020000454                _sbss = .
+                0x0000000020000454                __bss_start__ = _sbss
  *(.bss)
- .bss           0x0000000020000444       0x1c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+ .bss           0x0000000020000454       0x1c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/thumb/v7-m/nofp/crtbegin.o
+ .bss           0x0000000020000470        0x4 user/bsp_SysTick.o
  *(.bss*)
  *(COMMON)
- COMMON         0x0000000020000460       0x21 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
-                0x0000000020000460                __lock___atexit_recursive_mutex
-                0x0000000020000464                __lock___arc4random_mutex
-                0x0000000020000468                __lock___env_recursive_mutex
-                0x000000002000046c                __lock___sinit_recursive_mutex
-                0x0000000020000470                __lock___malloc_recursive_mutex
-                0x0000000020000474                __lock___at_quick_exit_mutex
-                0x0000000020000478                __lock___dd_hash_mutex
-                0x000000002000047c                __lock___tz_mutex
-                0x0000000020000480                __lock___sfp_recursive_mutex
-                0x0000000020000484                . = ALIGN (0x4)
- *fill*         0x0000000020000481        0x3 
-                0x0000000020000484                _ebss = .
-                0x0000000020000484                __bss_end__ = _ebss
+ COMMON         0x0000000020000474       0x21 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
+                0x0000000020000474                __lock___atexit_recursive_mutex
+                0x0000000020000478                __lock___arc4random_mutex
+                0x000000002000047c                __lock___env_recursive_mutex
+                0x0000000020000480                __lock___sinit_recursive_mutex
+                0x0000000020000484                __lock___malloc_recursive_mutex
+                0x0000000020000488                __lock___at_quick_exit_mutex
+                0x000000002000048c                __lock___dd_hash_mutex
+                0x0000000020000490                __lock___tz_mutex
+                0x0000000020000494                __lock___sfp_recursive_mutex
+                0x0000000020000498                . = ALIGN (0x4)
+ *fill*         0x0000000020000495        0x3 
+                0x0000000020000498                _ebss = .
+                0x0000000020000498                __bss_end__ = _ebss
                 [!provide]                        PROVIDE (end = _ebss)
                 [!provide]                        PROVIDE (_end = _ebss)
 
 ._user_heap_stack
-                0x0000000020000484      0x200 load address 0x0000000008000b78
-                0x0000000020000484                . = ALIGN (0x4)
-                0x0000000020000484                . = (. + _Min_Heap_Size)
-                0x0000000020000684                . = (. + _Min_Stack_Size)
- *fill*         0x0000000020000484      0x200 
-                0x0000000020000684                . = ALIGN (0x4)
+                0x0000000020000498      0x200 load address 0x0000000008001544
+                0x0000000020000498                . = ALIGN (0x4)
+                0x0000000020000498                . = (. + _Min_Heap_Size)
+                0x0000000020000698                . = (. + _Min_Stack_Size)
+ *fill*         0x0000000020000498      0x200 
+                0x0000000020000698                . = ALIGN (0x4)
 
 .memory_b1_text
  *(.mb1text)
@@ -1326,42 +1359,63 @@ LOAD /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-no
  libgcc.a(*)
 OUTPUT(app.elf elf32-littlearm)
 
-.debug_line     0x0000000000000000      0x631
+.debug_line     0x0000000000000000      0xf12
  .debug_line    0x0000000000000000       0x7b startup/startup_stm32f10x_hd.o
- .debug_line    0x000000000000007b      0x188 user/stm32f10x_it.o
- .debug_line    0x0000000000000203      0x1a1 user/main.o
- .debug_line    0x00000000000003a4      0x28d cmsis/system_stm32f10x.o
+ .debug_line    0x000000000000007b      0x18d user/stm32f10x_it.o
+ .debug_line    0x0000000000000208      0x14a user/bsp.o
+ .debug_line    0x0000000000000352      0x1a4 user/main.o
+ .debug_line    0x00000000000004f6      0x254 user/bsp_SysTick.o
+ .debug_line    0x000000000000074a      0x28d cmsis/system_stm32f10x.o
+ .debug_line    0x00000000000009d7      0x53b lib/src/stm32f10x_rcc.o
 
-.debug_info     0x0000000000000000      0x833
+.debug_info     0x0000000000000000     0x18ee
  .debug_info    0x0000000000000000       0x22 startup/startup_stm32f10x_hd.o
- .debug_info    0x0000000000000022      0x144 user/stm32f10x_it.o
- .debug_info    0x0000000000000166      0x246 user/main.o
- .debug_info    0x00000000000003ac      0x487 cmsis/system_stm32f10x.o
+ .debug_info    0x0000000000000022      0x157 user/stm32f10x_it.o
+ .debug_info    0x0000000000000179       0xb8 user/bsp.o
+ .debug_info    0x0000000000000231      0x246 user/main.o
+ .debug_info    0x0000000000000477      0x6df user/bsp_SysTick.o
+ .debug_info    0x0000000000000b56      0x487 cmsis/system_stm32f10x.o
+ .debug_info    0x0000000000000fdd      0x911 lib/src/stm32f10x_rcc.o
 
-.debug_abbrev   0x0000000000000000      0x363
+.debug_abbrev   0x0000000000000000      0x861
  .debug_abbrev  0x0000000000000000       0x12 startup/startup_stm32f10x_hd.o
- .debug_abbrev  0x0000000000000012       0x80 user/stm32f10x_it.o
- .debug_abbrev  0x0000000000000092      0x110 user/main.o
- .debug_abbrev  0x00000000000001a2      0x1c1 cmsis/system_stm32f10x.o
+ .debug_abbrev  0x0000000000000012       0xb4 user/stm32f10x_it.o
+ .debug_abbrev  0x00000000000000c6       0x82 user/bsp.o
+ .debug_abbrev  0x0000000000000148      0x110 user/main.o
+ .debug_abbrev  0x0000000000000258      0x24f user/bsp_SysTick.o
+ .debug_abbrev  0x00000000000004a7      0x1c1 cmsis/system_stm32f10x.o
+ .debug_abbrev  0x0000000000000668      0x1f9 lib/src/stm32f10x_rcc.o
 
-.debug_aranges  0x0000000000000000       0x88
+.debug_aranges  0x0000000000000000       0xe8
  .debug_aranges
                 0x0000000000000000       0x28 startup/startup_stm32f10x_hd.o
  .debug_aranges
                 0x0000000000000028       0x20 user/stm32f10x_it.o
  .debug_aranges
-                0x0000000000000048       0x20 user/main.o
+                0x0000000000000048       0x20 user/bsp.o
  .debug_aranges
-                0x0000000000000068       0x20 cmsis/system_stm32f10x.o
+                0x0000000000000068       0x20 user/main.o
+ .debug_aranges
+                0x0000000000000088       0x20 user/bsp_SysTick.o
+ .debug_aranges
+                0x00000000000000a8       0x20 cmsis/system_stm32f10x.o
+ .debug_aranges
+                0x00000000000000c8       0x20 lib/src/stm32f10x_rcc.o
 
-.debug_str      0x0000000000000000      0x381
+.debug_str      0x0000000000000000      0xc4c
  .debug_str     0x0000000000000000       0x48 startup/startup_stm32f10x_hd.o
- .debug_str     0x0000000000000048      0x19b user/stm32f10x_it.o
-                                        0x1f3 (size before relaxing)
- .debug_str     0x00000000000001e3       0x82 user/main.o
+ .debug_str     0x0000000000000048      0x1b1 user/stm32f10x_it.o
+                                        0x209 (size before relaxing)
+ .debug_str     0x00000000000001f9       0x14 user/bsp.o
+                                        0x163 (size before relaxing)
+ .debug_str     0x000000000000020d       0x82 user/main.o
                                         0x1d6 (size before relaxing)
- .debug_str     0x0000000000000265      0x11c cmsis/system_stm32f10x.o
+ .debug_str     0x000000000000028f      0x54e user/bsp_SysTick.o
+                                        0x6c0 (size before relaxing)
+ .debug_str     0x00000000000007dd       0xa0 cmsis/system_stm32f10x.o
                                         0x2c0 (size before relaxing)
+ .debug_str     0x000000000000087d      0x3cf lib/src/stm32f10x_rcc.o
+                                        0x60c (size before relaxing)
 
 .debug_ranges   0x0000000000000000       0x20
  .debug_ranges  0x0000000000000000       0x20 startup/startup_stm32f10x_hd.o
@@ -1369,19 +1423,25 @@ OUTPUT(app.elf elf32-littlearm)
 .comment        0x0000000000000000       0x79
  .comment       0x0000000000000000       0x79 user/stm32f10x_it.o
                                          0x7a (size before relaxing)
+ .comment       0x0000000000000079       0x7a user/bsp.o
  .comment       0x0000000000000079       0x7a user/main.o
+ .comment       0x0000000000000079       0x7a user/bsp_SysTick.o
  .comment       0x0000000000000079       0x7a cmsis/system_stm32f10x.o
+ .comment       0x0000000000000079       0x7a lib/src/stm32f10x_rcc.o
 
-.debug_frame    0x0000000000000000      0x3c0
- .debug_frame   0x0000000000000000      0x110 user/stm32f10x_it.o
- .debug_frame   0x0000000000000110       0x58 user/main.o
- .debug_frame   0x0000000000000168       0x98 cmsis/system_stm32f10x.o
- .debug_frame   0x0000000000000200       0x2c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-init.o)
- .debug_frame   0x000000000000022c       0x5c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
- .debug_frame   0x0000000000000288       0x20 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-atexit.o)
- .debug_frame   0x00000000000002a8       0x34 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-fini.o)
- .debug_frame   0x00000000000002dc       0xb0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
- .debug_frame   0x000000000000038c       0x34 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__atexit.o)
+.debug_frame    0x0000000000000000      0x9e4
+ .debug_frame   0x0000000000000000      0x10c user/stm32f10x_it.o
+ .debug_frame   0x000000000000010c       0x2c user/bsp.o
+ .debug_frame   0x0000000000000138       0x58 user/main.o
+ .debug_frame   0x0000000000000190      0x108 user/bsp_SysTick.o
+ .debug_frame   0x0000000000000298       0x98 cmsis/system_stm32f10x.o
+ .debug_frame   0x0000000000000330      0x4f4 lib/src/stm32f10x_rcc.o
+ .debug_frame   0x0000000000000824       0x2c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-init.o)
+ .debug_frame   0x0000000000000850       0x5c /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x00000000000008ac       0x20 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-atexit.o)
+ .debug_frame   0x00000000000008cc       0x34 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-fini.o)
+ .debug_frame   0x0000000000000900       0xb0 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-lock.o)
+ .debug_frame   0x00000000000009b0       0x34 /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__atexit.o)
 
 Cross Reference Table
 
@@ -1525,6 +1585,9 @@ DMA_StructInit                                    lib/src/stm32f10x_dma.o
 DebugMon_Handler                                  user/stm32f10x_it.o
                                                   startup/startup_stm32f10x_hd.o
 Default_Handler                                   startup/startup_stm32f10x_hd.o
+Delay_ms                                          user/bsp_SysTick.o
+                                                  user/main.o
+Delay_us                                          user/bsp_SysTick.o
 EXTI0_IRQHandler                                  startup/startup_stm32f10x_hd.o
 EXTI15_10_IRQHandler                              startup/startup_stm32f10x_hd.o
 EXTI1_IRQHandler                                  startup/startup_stm32f10x_hd.o
@@ -1702,15 +1765,20 @@ RCC_ClearFlag                                     lib/src/stm32f10x_rcc.o
 RCC_ClearITPendingBit                             lib/src/stm32f10x_rcc.o
 RCC_ClockSecuritySystemCmd                        lib/src/stm32f10x_rcc.o
 RCC_DeInit                                        lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_GetClocksFreq                                 lib/src/stm32f10x_rcc.o
                                                   lib/src/stm32f10x_spi.o
                                                   lib/src/stm32f10x_usart.o
                                                   lib/src/stm32f10x_i2c.o
 RCC_GetFlagStatus                                 lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_GetITStatus                                   lib/src/stm32f10x_rcc.o
 RCC_GetSYSCLKSource                               lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_HCLKConfig                                    lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_HSEConfig                                     lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_HSICmd                                        lib/src/stm32f10x_rcc.o
 RCC_IRQHandler                                    startup/startup_stm32f10x_hd.o
 RCC_ITConfig                                      lib/src/stm32f10x_rcc.o
@@ -1718,14 +1786,20 @@ RCC_LSEConfig                                     lib/src/stm32f10x_rcc.o
 RCC_LSICmd                                        lib/src/stm32f10x_rcc.o
 RCC_MCOConfig                                     lib/src/stm32f10x_rcc.o
 RCC_PCLK1Config                                   lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_PCLK2Config                                   lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_PLLCmd                                        lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_PLLConfig                                     lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_RTCCLKCmd                                     lib/src/stm32f10x_rcc.o
 RCC_RTCCLKConfig                                  lib/src/stm32f10x_rcc.o
 RCC_SYSCLKConfig                                  lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RCC_USBCLKConfig                                  lib/src/stm32f10x_rcc.o
 RCC_WaitForHSEStartUp                             lib/src/stm32f10x_rcc.o
+                                                  user/bsp_SysTick.o
 RTCAlarm_IRQHandler                               startup/startup_stm32f10x_hd.o
 RTC_ClearFlag                                     lib/src/stm32f10x_rtc.o
 RTC_ClearITPendingBit                             lib/src/stm32f10x_rtc.o
@@ -1799,10 +1873,14 @@ SPI_StructInit                                    lib/src/stm32f10x_spi.o
 SPI_TransmitCRC                                   lib/src/stm32f10x_spi.o
 SVC_Handler                                       user/stm32f10x_it.o
                                                   startup/startup_stm32f10x_hd.o
+SetSysClockTo72                                   user/bsp_SysTick.o
 SysTick_CLKSourceConfig                           lib/src/misc.o
 SysTick_Handler                                   user/stm32f10x_it.o
                                                   startup/startup_stm32f10x_hd.o
+SysTick_Init                                      user/bsp_SysTick.o
+                                                  user/bsp.o
 SystemCoreClock                                   cmsis/system_stm32f10x.o
+                                                  user/bsp_SysTick.o
 SystemCoreClockUpdate                             cmsis/system_stm32f10x.o
 SystemInit                                        cmsis/system_stm32f10x.o
                                                   startup/startup_stm32f10x_hd.o
@@ -1908,6 +1986,8 @@ TIM_TimeBaseInit                                  lib/src/stm32f10x_tim.o
 TIM_TimeBaseStructInit                            lib/src/stm32f10x_tim.o
 TIM_UpdateDisableConfig                           lib/src/stm32f10x_tim.o
 TIM_UpdateRequestConfig                           lib/src/stm32f10x_tim.o
+TimingDelay_Decrement                             user/bsp_SysTick.o
+                                                  user/stm32f10x_it.o
 UART4_IRQHandler                                  startup/startup_stm32f10x_hd.o
 UART5_IRQHandler                                  startup/startup_stm32f10x_hd.o
 USART1_IRQHandler                                 startup/startup_stm32f10x_hd.o
@@ -2253,6 +2333,8 @@ _wctomb_r                                         /home/freelin/stm32/gcc-arm-no
 atexit                                            /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-atexit.o)
                                                   /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/libc.a(lib_a-__call_atexit.o)
                                                   /home/freelin/stm32/gcc-arm-none-eabi-9-2019-q4-major/bin/../lib/gcc/arm-none-eabi/9.2.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp/crt0.o
+bsp_init                                          user/bsp.o
+                                                  user/main.o
 cJSON_AddItemReferenceToArray                     user/cJSON.o
 cJSON_AddItemReferenceToObject                    user/cJSON.o
 cJSON_AddItemToArray                              user/cJSON.o

@@ -17,9 +17,16 @@
 					GPIO_ResetBits(GPIOB,GPIO_Pin_0)
 
 #define LED2(a)	if (a)	\
-					GPIO_SetBits(GPIOF,GPIO_Pin_2);\
+					GPIO_SetBits(GPIOF,GPIO_Pin_7);\
 					else		\
-					GPIO_ResetBits(GPIOF,GPIO_Pin_2)
+					GPIO_ResetBits(GPIOF,GPIO_Pin_7)
+
+#define LED3(a)	if (a)	\
+					GPIO_SetBits(GPIOF,GPIO_Pin_8);\
+					else		\
+					GPIO_ResetBits(GPIOF,GPIO_Pin_8)
+
+
 
 					/* 直接操作寄存器的方法控制IO */
 #define	digitalHi(p,i)				{p->BSRR=i;}			//设置为高电平		

@@ -28,7 +28,7 @@ static void LED_GPIO_Config(void)
 		GPIO_InitTypeDef GPIO_InitStructure;
 
 		/*开启GPIOB和GPIOF的外设时钟*/
-		RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOF, ENABLE); 
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOF, ENABLE); 
 		
 		/*选择要控制的GPIOB引脚*/															   
 		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;	
@@ -54,7 +54,7 @@ static void LED_GPIO_Config(void)
 		GPIO_Init(GPIOF, &GPIO_InitStructure);
 		
 }
-
+#define LED_DELAY 300
 
 void SysInitIndictor(void)
 {
@@ -62,15 +62,15 @@ void SysInitIndictor(void)
 		LED_GPIO_Config();
 
 		LED1_ON;
-		Delay_ms(30);
 		LED2_ON;
-		Delay_ms(30);
+		LED3_ON;
+		Delay_ms(LED_DELAY);
 
 	
 		LED1_OFF;
-		Delay_ms(30);
 		LED2_OFF;
-		Delay_ms(30);
+		LED3_OFF;
+		Delay_ms(LED_DELAY);
 
 }
 

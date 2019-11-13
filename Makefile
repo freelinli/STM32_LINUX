@@ -1,6 +1,7 @@
 TARGET=app
 CC=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
+NOT_INCLUDE_DIR=demo
 RM=rm -f
 CORE=3
 CPUFLAGS=-mthumb -mcpu=cortex-m$(CORE)
@@ -9,7 +10,7 @@ CFLAGS=$(INCFLAGS) -D STM32F10X_HD -D USE_STDPERIPH_DRIVER -g -o
 PWD=$(shell pwd)
 
 INCFLAGS=-I $(PWD)/cmsis -I $(PWD)/lib/inc -I $(PWD)/user
-C_SRC=$(shell find ./ -name '*.c')
+C_SRC=$(shell find . -path ./$(NOT_INCLUDE_DIR)  -prune -o -type f -name '*.c' -print)
 C_OBJ=$(C_SRC:%.c=%.o)
 
 START_SRC=$(shell find ./ -name 'startup_stm32f10x_hd.s')

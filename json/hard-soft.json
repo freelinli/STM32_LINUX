@@ -1,0 +1,90 @@
+{
+	"firmware": {
+		"device": [
+			"stm32",
+			"f103",
+			"zet6"
+		],
+		"software": {
+			"version": [
+				0,
+				1,
+				3
+			],
+			"data": [
+				2019,
+				1,
+				3
+			],
+			"author": "freelin"
+		},
+		"hardware": {
+			"version": [
+				0,
+				1,
+				3
+			],
+			"data": [
+				2019,
+				1,
+				3
+			],
+			"author": "freelin"
+		},
+		"authentication": {}
+	},
+	"hardware": {
+		"clock": "100000",
+		"io": [
+			{
+				"speed": "50000",
+				"direction": "out",
+				"value": "1",
+				"driver strength": "80",
+				"IO": [
+					"GPIOA",
+					"PIN30"
+				],
+				"status": "okay"
+			},
+			{
+				"speed": "50000",
+				"direction": "out",
+				"value": "1",
+				"driver strength": "80",
+				"IO": [
+					"GPIOA",
+					"PIN31"
+				]
+			}
+		],
+		"adc": [],
+		"dac": [],
+		"i2c": [],
+		"spi": [
+		"cs":"&i2c0"
+		],
+		"qspi": [],
+		"i2s": [],
+		"sdio": [],
+		"uart": [],
+		"usb": [],
+		"timer": [],
+		"dma": [],
+		"can": [],
+		"pwm": [],
+		"exit": [],
+		"watchdog": []
+	},
+	"software": {
+		"globaldata": {
+			"int": {},
+			"double": {},
+			"string": {}
+		},
+		"func": {},
+		"main": {
+			"func": []
+		}
+	}
+}

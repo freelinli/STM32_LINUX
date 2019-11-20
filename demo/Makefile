@@ -14,8 +14,8 @@ all:cjson
 $(C_OBJ):%.o:%.c
 	$(CC) -c $^ -E $@
 
-cjson: ../user/cJSON.c cJSON_demo.c 
-	$(CC) $^ $(INCFLAGS) -o $@ -lm 
+cjson: ../user/cJSON.c json_demo.c 
+	$(CC) $^ $(INCFLAGS) -o $@ -lm -g 
 
 test:
 	echo "$(C_SRC)"

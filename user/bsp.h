@@ -3,6 +3,7 @@
 
 #include "bsp_SysTick.h"
 #include "bsp_led.h"
+#include "bsp_usart.h"
 
 int bsp_init(void);
 

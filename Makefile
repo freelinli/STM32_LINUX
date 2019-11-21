@@ -6,7 +6,7 @@ NOT_INCLUDE_DIR=demo
 RM=rm -f
 CORE=3
 CPUFLAGS=-mthumb -mcpu=cortex-m$(CORE)
-LDFLAGS = -T stm32_flash.ld -Wl,-cref,-u,Reset_Handler -Wl,-Map=$(TARGET).map -Wl,--gc-sections -Wl,--defsym=malloc_getpagesize_P=0x80 -Wl,--start-group -lc -lm -Wl,--end-group
+LDFLAGS = -T stm32_flash.ld -Wl,-cref,-u,Reset_Handler -Wl,-Map=$(TARGET).map -Wl,--gc-sections -Wl,--defsym=malloc_getpagesize_P=0x80 -Wl,--start-group -lc -lm -Wl,--end-group --specs=nano.specs --specs=nosys.specs -std=gnu99
 CFLAGS=$(INCFLAGS) -D STM32F10X_HD -D USE_STDPERIPH_DRIVER -g -o
 PWD=$(shell pwd)
 

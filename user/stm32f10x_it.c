@@ -159,4 +159,15 @@ void SysTick_Handler(void)
   */ 
 
 
+void USART1_IRQHandler(void)
+{
+    uint8_t ch;
+
+    if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
+    {
+        ch = USART_ReceiveData(USART1);
+		printf("%c", ch);
+	}
+}
+
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

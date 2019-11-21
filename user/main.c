@@ -16,6 +16,8 @@ int main(int argc, const char *argv[])
 		LED1(0);
 		LED2(0);
 		LED3(0);
+		printf("hello\r\n");
+		USART1_printf(USART1, "world\r\n");
 	}
 }
 

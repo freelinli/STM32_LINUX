@@ -46,11 +46,7 @@
 #define LED3_TOGGLE		digitalToggle(GPIOF,GPIO_Pin_8)
 #define LED3_OFF			digitalHi(GPIOF,GPIO_Pin_8)
 #define LED3_ON				digitalLo(GPIOF,GPIO_Pin_8)
-
-
-
-
-					
 				
 void SysInitIndictor(void);
+void GPIO_Config(GPIO_TypeDef *gpio, uint32_t clk, int pin, int mode, int speed, int value);
 #endif /* __LED_H */

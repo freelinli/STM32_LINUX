@@ -54,39 +54,33 @@ static void LED_GPIO_Config(void)
 		GPIO_Init(GPIOF, &GPIO_InitStructure);
 		
 }
-#define LED_DELAY 300
 
-void SysInitIndictor(void)
+void GPIO_set_value(GPIO_TypeDef *gpio, int pin, int value)
 {
-
-		LED_GPIO_Config();
-
-		LED1_ON;
-		LED2_ON;
-		LED3_ON;
-		Delay_ms(LED_DELAY);
-
-	
-		LED1_OFF;
-		LED2_OFF;
-		LED3_OFF;
-		Delay_ms(LED_DELAY);
-
+	value ? GPIO_SetBits(gpio, pin) : GPIO_ResetBits(gpio, pin);
 }
 
-void GPIO_Config(GPIO_TypeDef GPIOx)
+void GPIO_Config(GPIO_TypeDef *gpio, uint32_t clk, int pin, int mode, int speed, int value)
 {		
 		GPIO_InitTypeDef GPIO_InitStructure;
 
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOF, ENABLE); 
+		RCC_APB2PeriphClockCmd(clk, ENABLE); 
 																   
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;	
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;   
-		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
+		GPIO_InitStructure.GPIO_Pin = pin;	
+		GPIO_InitStructure.GPIO_Mode = mode;   
+		GPIO_InitStructure.GPIO_Speed = speed; 
 
-
-		GPIO_Init(GPIOx, &GPIO_InitStructure);	
-		
+		GPIO_Init(gpio, &GPIO_InitStructure);	
+		GPIO_set_value(gpio, pin, value);	
+	}
+void SysInitIndictor(void)
+{
+		GPIO_Config(GPIOB, RCC_APB2Periph_GPIOB, GPIO_Pin_0, GPIO_Mode_Out_PP, GPIO_Speed_50MHz, 0);
+		GPIO_Config(GPIOF, RCC_APB2Periph_GPIOF, GPIO_Pin_7, GPIO_Mode_Out_PP, GPIO_Speed_50MHz, 1);
+		GPIO_Config(GPIOF, RCC_APB2Periph_GPIOF, GPIO_Pin_8, GPIO_Mode_Out_PP, GPIO_Speed_50MHz, 0);
 }
+
+
+
 
 /*********************************************END OF FILE**********************/

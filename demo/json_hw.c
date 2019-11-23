@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include "json_hw.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
-#define DEBUG_STRING 0
+#define DEBUG_STRING 1
 
 int json_hardware_decode_io(cJSON *jsonroot)
 {
@@ -23,10 +24,9 @@ int json_hardware_decode_io(cJSON *jsonroot)
 	}
 	fseek(file, 0, SEEK_END);
 	
-	fputs("void SysInitIndictor(void)\r\n", file);
-	fputs("{\r\n", file);
-
-
+	fputs("void SysInitIndictor(void)\r\n{\r\n", file);
+	fflush(file);
+	sync();
 	array_size = cJSON_GetArraySize(jsonroot);
 	for (array_index = 0; array_index < array_size; array_index++) {
 		io.io_array = cJSON_GetArrayItem(jsonroot, array_index);
@@ -58,8 +58,10 @@ int json_hardware_decode_io(cJSON *jsonroot)
 				printf("io value %s\r\n", io.value->valuestring);
 			}
 			if (io.IO) {
-
+				printf("io.IO\r\n");
+				io.io_array_size = cJSON_GetArraySize(io.IO);
 				for (io.io_array_index = 0; io.io_array_index < io.io_array_size; io.io_array_index++) {
+					printf("io.IO array_index %d\r\n", io.io_array_index);
 					io.IO_index = cJSON_GetArrayItem(io.IO, io.io_array_index);
 					if (io.IO_index) {
 						io.io_node_size = cJSON_GetArraySize(io.IO_index);
@@ -72,6 +74,8 @@ int json_hardware_decode_io(cJSON *jsonroot)
 							memcmp(io.direction->valuestring, "out", 3) ?  "GPIO_Mode_IN_FLOATING" : "GPIO_Mode_Out_PP",\
 							io.speed->valuestring, io.value->valuestring);
 							fputs(oneline_code, file);
+							fflush(file);
+							sync();
 							printf("oneline_code:\r\n%s\r\n", oneline_code);
 
 						}
@@ -84,6 +88,8 @@ int json_hardware_decode_io(cJSON *jsonroot)
 		}
 	}
 	fputs("}\r\n", file);
+	fflush(file);
+	sync();
 	fclose(file);
 
 }

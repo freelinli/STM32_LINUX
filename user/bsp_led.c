@@ -81,3 +81,9 @@ void SysInitIndictor(void)
 		GPIO_Config(GPIOF, RCC_APB2Periph_GPIOF, GPIO_Pin_8, GPIO_Mode_Out_PP, GPIO_Speed_50MHz, 0);
 }
 */
+void SysInitIndictor(void)
+{
+	GPIO_Config(GPIOB, RCC_APB2Periph_GPIOB, GPIO_Pin_0, GPIO_Mode_Out_PP, GPIO_Speed_50MHz, 1);
+	GPIO_Config(GPIOF, RCC_APB2Periph_GPIOF, GPIO_Pin_7, GPIO_Mode_Out_PP, GPIO_Speed_50MHz, 0);
+	GPIO_Config(GPIOF, RCC_APB2Periph_GPIOF, GPIO_Pin_8, GPIO_Mode_Out_PP, GPIO_Speed_50MHz, 0);
+}

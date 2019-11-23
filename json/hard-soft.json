@@ -11,7 +11,7 @@
 				1,
 				3
 			],
-			"data": [
+			"date": [
 				2019,
 				1,
 				3
@@ -20,16 +20,16 @@
 		},
 		"hardware": {
 			"version": [
+				1,
 				0,
-				1,
-				3
+				10
 			],
-			"data": [
-				2019,
-				1,
-				3
+			"date": [
+				2020,
+				2,
+				10
 			],
-			"author": "freelin"
+			"author": "lijinnan"
 		},
 		"authentication": {}
 	},
@@ -37,25 +37,34 @@
 		"clock": "100000",
 		"io": [
 			{
-				"speed": "50000",
+				"speed": "50M",
 				"direction": "out",
 				"value": "1",
-				"driver strength": "80",
-				"IO": [
-					"GPIOA",
-					"PIN30"
+				"IO": [{"GPIOA":
+					"PIN30"},{"GPIOA":
+					"PIN31"}	
 				],
 				"status": "okay"
 			},
 			{
-				"speed": "50000",
+				"speed": "50M",
+				"direction": "out",
+				"value": "1",
+				"IO": [{"GPIOA":
+					"PIN30"},{"GPIOA":
+					"PIN31"}
+				],
+				"status": "disable"
+			},
+				{
+				"speed": "50M",
 				"direction": "out",
 				"value": "1",
 				"driver strength": "80",
 				"IO": [
 					"GPIOA",
 					"PIN31"
-				]
+				]		
 			}
 		],
 		"adc": [],

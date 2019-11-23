@@ -14,7 +14,7 @@ all:cjson
 $(C_OBJ):%.o:%.c
 	$(CC) -c $^ -E $@
 
-cjson: ../user/cJSON.c json_demo.c 
+cjson: ../user/cJSON.c json_demo.c log.c json_hw.c
 	$(CC) $^ $(INCFLAGS) -o $@ -lm -g 
 
 test:

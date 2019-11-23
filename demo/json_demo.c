@@ -2,14 +2,18 @@
 #include <stdlib.h>
 #include "cJSON.h"
 #include "json_demo.h"
+#include "json_hw.h"
+#include "log.h"
 #define ERR_SUCCESS 0
 
+#define TAG_FOR_FILE "JSON_DEMO"
 
 
 int firmware_json_decode(cJSON *jsonroot)
 {
 
-	json_firmware_t json_firmware;;
+	json_firmware_t json_firmware;
+	int array_size = 0;
 
 	json_firmware.device = cJSON_GetObjectItem(jsonroot, "device");
 	json_firmware.software = cJSON_GetObjectItem(jsonroot, "software");
@@ -17,9 +21,17 @@ int firmware_json_decode(cJSON *jsonroot)
 	json_firmware.authentication = cJSON_GetObjectItem(jsonroot, "authentication");
 
 	if (json_firmware.device) {
-
-
+			if(json_firmware.device->type == cJSON_Array) {
+				array_size = cJSON_GetArraySize(json_firmware.device);
+				if(array_size == 3) {
+					LOG_DEBUG(TAG_FOR_FILE, "device name: %s %s %s\r\n", 
+					cJSON_GetArrayItem(json_firmware.device, 0)->valuestring,
+					cJSON_GetArrayItem(json_firmware.device, 1)->valuestring,
+					cJSON_GetArrayItem(json_firmware.device, 2)->valuestring);
+				}
+			}
 	}
+
 	if (json_firmware.software) {
 	
 		json_firmware.software_sub_version = cJSON_GetObjectItem(json_firmware.software, "version");
@@ -28,15 +40,34 @@ int firmware_json_decode(cJSON *jsonroot)
 
 		if (json_firmware.software_sub_version) {
 
+			if(json_firmware.software_sub_version->type == cJSON_Array) {
+				array_size = cJSON_GetArraySize(json_firmware.software_sub_version);
+				if(array_size == 3) {
+					LOG_DEBUG(TAG_FOR_FILE, "device software version: %d.%d.%d\r\n", 
+					cJSON_GetArrayItem(json_firmware.software_sub_version, 0)->valueint,
+					cJSON_GetArrayItem(json_firmware.software_sub_version, 1)->valueint,
+					cJSON_GetArrayItem(json_firmware.software_sub_version, 2)->valueint);
+				}
+			}
 
 		}
 		if (json_firmware.software_sub_date) {
-
+			if(json_firmware.software_sub_date->type == cJSON_Array) {
+				array_size = cJSON_GetArraySize(json_firmware.software_sub_date);
+				if(array_size == 3) {
+					LOG_DEBUG(TAG_FOR_FILE, "device software date: %d.%d.%d\r\n", 
+					cJSON_GetArrayItem(json_firmware.software_sub_date, 0)->valueint,
+					cJSON_GetArrayItem(json_firmware.software_sub_date, 1)->valueint,
+					cJSON_GetArrayItem(json_firmware.software_sub_date, 2)->valueint);
+				}
+			}
 			
 		}
 		if (json_firmware.software_sub_author) {
-
-			
+			if(json_firmware.software_sub_author->type == cJSON_String) {
+					LOG_DEBUG(TAG_FOR_FILE, "device software author: %s\r\n", 
+					json_firmware.software_sub_author->valuestring);
+			}		
 		}
 	}
 
@@ -47,19 +78,38 @@ int firmware_json_decode(cJSON *jsonroot)
 		json_firmware.hardware_sub_author = cJSON_GetObjectItem(json_firmware.hardware, "author");
 
 		if (json_firmware.hardware_sub_version) {
-
-
+			if(json_firmware.hardware_sub_version->type == cJSON_Array) {
+				array_size = cJSON_GetArraySize(json_firmware.hardware_sub_version);
+				if(array_size == 3) {
+					LOG_DEBUG(TAG_FOR_FILE, "device software version: %d.%d.%d\r\n", 
+					cJSON_GetArrayItem(json_firmware.hardware_sub_version, 0)->valueint,
+					cJSON_GetArrayItem(json_firmware.hardware_sub_version, 1)->valueint,
+					cJSON_GetArrayItem(json_firmware.hardware_sub_version, 2)->valueint);
+				}
+			}
 		}
 		if (json_firmware.hardware_sub_date) {
-
-			
+			if(json_firmware.hardware_sub_date->type == cJSON_Array) {
+				array_size = cJSON_GetArraySize(json_firmware.software_sub_date);
+				if(array_size == 3) {
+					LOG_DEBUG(TAG_FOR_FILE, "device software date: %d.%d.%d\r\n", 
+					cJSON_GetArrayItem(json_firmware.hardware_sub_date, 0)->valueint,
+					cJSON_GetArrayItem(json_firmware.hardware_sub_date, 1)->valueint,
+					cJSON_GetArrayItem(json_firmware.hardware_sub_date, 2)->valueint);
+				}
+			}
 		}
 		if (json_firmware.hardware_sub_author) {
-
-			
+			if(json_firmware.hardware_sub_author->type == cJSON_String) {
+					LOG_DEBUG(TAG_FOR_FILE, "device software author: %s\r\n", 
+					json_firmware.hardware_sub_author->valuestring);
+			}		
 		}
 	}
 
+	if (json_firmware.authentication) {
+		LOG_DEBUG(TAG_FOR_FILE, "detect json_firmware.authentication in %s\r\n", __func__);
+	}
 	return ERR_SUCCESS;
 }
 
@@ -88,6 +138,8 @@ int hardware_json_decode(cJSON *jsonroot)
 	if (json_hardware.clock) {
 	}
 	if (json_hardware.io) {
+		LOG_DEBUG(TAG_FOR_FILE, "detect json_hardware.io in %s\r\n", __func__);
+		json_hardware_decode_io(json_hardware.io);
 	}
 	if (json_hardware.adc) {
 	}
@@ -139,6 +191,10 @@ void doit(char *text)
 	if (!json) {
 		printf("Error before: [%s]\n",cJSON_GetErrorPtr());
 	} else	{
+		out = cJSON_Print(json);
+		printf("%s\n",out);
+		free(out);
+		
 		json_firmware = cJSON_GetObjectItem(json, "firmware");
 		if (json_firmware) {
 			firmware_json_decode(json_firmware);
@@ -151,10 +207,8 @@ void doit(char *text)
 		if (json_software) {
 			software_json_decode(json_software);
 		}
-		out = cJSON_Print(json);
+	
 		cJSON_Delete(json);
-		printf("%s\n",out);
-		free(out);
 	}
 }
 
@@ -178,6 +232,8 @@ void dofile(char *filename)
 
 int main (int argc, const char * argv[]) {
 
+	xh_log_dst_disable(LOG_DST_FILE);
+	LOG_DEBUG(TAG_FOR_FILE, "start do file in %s\r\n", __func__);
 	/* Parse standard testfiles: */
 	dofile("../json/hard-soft.json"); 
 

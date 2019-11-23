@@ -9,9 +9,23 @@ int json_hardware_decode_io(cJSON *jsonroot)
 {
 	int array_size = 0, array_index = 0;
 	char *debug_out;
+	char oneline_code[128];
 	json_hardware_io_t io;
 	if(jsonroot->type != cJSON_Array) 
 		return -1;
+
+	FILE *file;
+
+	file = fopen("../user/bsp_led.c","rw+");
+	if (file == NULL) {
+		printf("fopen error \r\n");
+		return -1;
+	}
+	fseek(file, 0, SEEK_END);
+	
+	fputs("void SysInitIndictor(void)\r\n", file);
+	fputs("{\r\n", file);
+
 
 	array_size = cJSON_GetArraySize(jsonroot);
 	for (array_index = 0; array_index < array_size; array_index++) {
@@ -26,7 +40,7 @@ int json_hardware_decode_io(cJSON *jsonroot)
 			
 			if (io.status == NULL) 
 				continue;
-			if(strlen(io.status->valuestring) != 4 && !memcmp("okay", io.status->valuestring, 4))
+			if (strlen(io.status->valuestring) != 4 && memcmp("okay", io.status->valuestring, 4))
 				continue;
 
 			io.speed = cJSON_GetObjectItem(io.io_array, "speed");
@@ -53,6 +67,12 @@ int json_hardware_decode_io(cJSON *jsonroot)
 							io.io_node = cJSON_GetArrayItem(io.IO_index, io.io_node_index);
 							printf("io name:%s value:%s\r\n", io.io_node->string, io.io_node->valuestring);
 
+							sprintf(oneline_code, "\tGPIO_Config(%s, RCC_APB2Periph_%s, GPIO_Pin_%s, %s, GPIO_Speed_%sHz, %s);\r\n",\
+							io.io_node->string, io.io_node->string, io.io_node->valuestring,\
+							memcmp(io.direction->valuestring, "out", 3) ?  "GPIO_Mode_IN_FLOATING" : "GPIO_Mode_Out_PP",\
+							io.speed->valuestring, io.value->valuestring);
+							fputs(oneline_code, file);
+							printf("oneline_code:\r\n%s\r\n", oneline_code);
 
 						}
 						
@@ -61,9 +81,9 @@ int json_hardware_decode_io(cJSON *jsonroot)
 				}
 				
 			}
-
-
 		}
 	}
+	fputs("}\r\n", file);
+	fclose(file);
 
 }

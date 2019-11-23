@@ -40,21 +40,20 @@
 				"speed": "50M",
 				"direction": "out",
 				"value": "1",
-				"IO": [{"GPIOA":
-					"PIN30"},{"GPIOA":
-					"PIN31"}	
+				"IO": [{"GPIOB":
+					"0"}
 				],
 				"status": "okay"
 			},
 			{
 				"speed": "50M",
 				"direction": "out",
-				"value": "1",
-				"IO": [{"GPIOA":
-					"PIN30"},{"GPIOA":
-					"PIN31"}
+				"value": "0",
+				"IO": [{"GPIOF":
+					"7"},{"GPIOF":
+					"8"}
 				],
-				"status": "disable"
+				"status": "okay"
 			},
 				{
 				"speed": "50M",
@@ -63,8 +62,9 @@
 				"driver strength": "80",
 				"IO": [
 					"GPIOA",
-					"PIN31"
-				]		
+					"18"
+				],
+				"status": "disable"	
 			}
 		],
 		"adc": [],

@@ -73,45 +73,6 @@ int _write (int fd, char *pBuffer, int size)
 }
 
 
-
-
-/////重定向c库函数printf到USART1
-//int fputc(int ch, FILE *f)
-//{
-//    /* 发送一个字节数据到USART1 */
-//    USART_SendData(USART1, (uint8_t) ch);
-
-//    /* 等待发送完毕 */
-//    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
-
-//    return (ch);
-//}
-
-/////重定向c库函数scanf到USART1
-int fgetc(FILE *f)
-{
-    /* 等待串口1输入数据 */
-    while (USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
-
-    return (int)USART_ReceiveData(USART1);
-}
-
-
-/*
- * 函数名：fputc
- * 描述  ：重定向c库函数printf到USART2
- * 输入  ：无
- * 输出  ：无
- * 调用  ：由printf调用
- */
-int fputc(int ch, FILE *f)
-{
-	/* 将Printf内容发往串口 */
-	USART_SendData(USART1, (unsigned char) ch);
-	while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
-	return (ch);
-}
-
 /*
  * 函数名：itoa
  * 描述  ：将整形数据转换成字符串
